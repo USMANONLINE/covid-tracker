@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-list separator bordered>
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click="dialog.editProfile = !dialog.editProfile">
         <q-item-section>Edit Profile</q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" name="bluetooth" />
@@ -13,13 +13,13 @@
           <q-icon color="primary" name="bluetooth" />
         </q-item-section>
       </q-item>
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click="report.title = 'Feedback', dialog.feedback = !dialog.feedback">
         <q-item-section>Feedback</q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" name="bluetooth" />
         </q-item-section>
       </q-item>
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click="report.title = 'Technical Support', dialog.feedback = !dialog.feedback">
         <q-item-section>Technical Support</q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" name="bluetooth" />
@@ -122,8 +122,125 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="dialog.editProfile" maximized></q-dialog>
-    <q-dialog v-model="dialog.feedback" maximized></q-dialog>
+    <q-dialog v-model="dialog.editProfile" maximized>
+      <q-card>
+        <q-toolbar>
+          <q-toolbar-title>Edit Profile</q-toolbar-title>
+        </q-toolbar>
+        <q-separator />
+        <q-form>
+          <div>
+            <label for="full-name" class="text-subtitle1">Full Name</label>
+            <q-input
+              v-model.trim="user.name"
+              id="full-name"
+              type="text"
+              name="name"
+              outlined
+              dense
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type in fullname']"
+            />
+          </div>
+          <div>
+            <label for="email" class="text-subtitle1">Email Address</label>
+            <q-input
+              v-model.trim="user.email"
+              id="email"
+              type="email"
+              name="email"
+              outlined
+              dense
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type in email']"
+            />
+          </div>
+          <div>
+            <label for="phone" class="text-subtitle1">Phone Number</label>
+            <q-input
+              v-model.trim="user.phone"
+              id="phone"
+              type="tel"
+              name="phone"
+              outlined
+              dense
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type in phone number']"
+            />
+          </div>
+          <div>
+            <label for="gender" class="text-subtitle1">Gender</label>
+            <q-select
+              v-model.trim="user.gender"
+              :options="['Male', 'Female']"
+              id="gender"
+              outlined
+              dense
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type in gender']"
+            />
+          </div>
+          <div>
+            <label for="dob" class="text-subtitle1">Date of Birth</label>
+            <q-input v-model="user.dob" id="dob" outlined dense mask="date" :rules="['date']">
+              <template v-slot:prepend>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="user.dob">
+                      <div class="row items-center justify-end">
+                        <q-btn v-close-popup label="Close" color="primary" flat />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div>
+            <label for="password" class="text-subtitle1">Password</label>
+            <q-input
+              v-model="password"
+              id="password"
+              type="password"
+              name="password"
+              outlined
+              dense
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type in password']"
+            />
+          </div>
+        </q-form>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="dialog.feedback" maximized>
+      <q-card>
+        <q-toolbar>
+          <q-btn round flat dense icon="person" @click="dialog.feedback = !dialog.feedback"/>
+          <q-toolbar-title>{{ report.title }}</q-toolbar-title>
+        </q-toolbar>
+        <q-separator/>
+        <q-card-section>
+          <q-form @submit.prevent="saveReport">
+            <q-input
+              v-model.trim="report.description"
+              outlined
+              lazy-rules
+              type="textarea"
+              label="Describe what you've encountered"
+              :rules="[ val => val && val.length > 0 || 'Please type in what you\'ve have encountered']"
+            />
+            <div class="q-gutter-sm">
+              <q-radio v-model="report.status" val="issues" label="Issues" />
+              <q-radio v-model="report.status" val="suggestions" label="Suggestions" />
+            </div>
+            <q-btn
+              label="Send"
+              type="submit"
+            />
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -140,7 +257,14 @@ export default {
       editProfile: false
     },
 
-    password: {}
+    password: {},
+
+    report: {
+      title: '',
+      meta: { date: new Date().toISOString() }
+    },
+
+    user: {}
   }),
 
   methods: {
@@ -185,7 +309,45 @@ export default {
           message: 'Old password did not match !'
         })
       }
+    },
+
+    saveReport () {
+      const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
+      this.report.meta.reportBy = user._id
+      if (this.report.status === 'issues') {
+        this.report._id = 'issues:' + new Date().toISOString()
+        this.report.meta.stores = '_issues'
+      } else {
+        this.report._id = 'suggestions:' + new Date().toISOString()
+        this.report.meta.stores = '_suggestions'
+      }
+
+      if (this.report.status !== undefined) {
+        database.put(this.report).then(response => {
+          this.$q.notify({
+            type: 'positive',
+            message: this.report.title + ' sent successfully !'
+          })
+          this.dialog.feedback = !this.dialog.feedback
+          this.report = { title: '', meta: { date: new Date().toISOString() } }
+        }).catch(error => {
+          this.$q.notify({
+            type: 'negative',
+            message: 'Unable to send ' + this.report.title + '. Please check your network and try again !'
+          })
+          return error
+        })
+      } else {
+        this.$q.notify({
+          type: 'info',
+          message: 'Please select ' + this.report.title + ' status'
+        })
+      }
     }
+  },
+
+  mounted() {
+    this.user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
   }
 }
 </script>
