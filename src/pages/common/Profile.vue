@@ -125,91 +125,52 @@
     <q-dialog v-model="dialog.editProfile" maximized>
       <q-card>
         <q-toolbar>
+          <q-btn flat round dense icon="person" @click="dialog.editProfile = !dialog.editProfile"/>
           <q-toolbar-title>Edit Profile</q-toolbar-title>
         </q-toolbar>
         <q-separator />
-        <q-form>
-          <div>
-            <label for="full-name" class="text-subtitle1">Full Name</label>
-            <q-input
-              v-model.trim="user.name"
-              id="full-name"
-              type="text"
-              name="name"
-              outlined
-              dense
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type in fullname']"
+        <q-card-section>
+          <q-form @submit.prevent="updateProfile">
+            <div>
+              <label for="full-name" class="text-subtitle1">Full Name</label>
+              <q-input
+                v-model.trim="user.name"
+                id="full-name"
+                type="text"
+                name="name"
+                outlined
+                dense
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please type in fullname']"
+              />
+            </div>
+            <div>
+              <label for="phone" class="text-subtitle1">Phone Number</label>
+              <q-input
+                v-model.trim="user.phone"
+                id="phone"
+                type="tel"
+                name="phone"
+                outlined
+                dense
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please type in phone number']"
+              />
+            </div>
+            <div>
+              <label for="profile" class="text-subtitle1">Profile Pic</label>
+              <q-file @input="uploadProfilePic" lazy-rules dense id="profile" outlined v-model="user.profile">
+                <template v-slot:prepend>
+                  <q-icon name="attach_file" />
+                </template>
+              </q-file>
+            </div>
+            <q-btn
+              type="submit"
+              label="Update Profile"
             />
-          </div>
-          <div>
-            <label for="email" class="text-subtitle1">Email Address</label>
-            <q-input
-              v-model.trim="user.email"
-              id="email"
-              type="email"
-              name="email"
-              outlined
-              dense
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type in email']"
-            />
-          </div>
-          <div>
-            <label for="phone" class="text-subtitle1">Phone Number</label>
-            <q-input
-              v-model.trim="user.phone"
-              id="phone"
-              type="tel"
-              name="phone"
-              outlined
-              dense
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type in phone number']"
-            />
-          </div>
-          <div>
-            <label for="gender" class="text-subtitle1">Gender</label>
-            <q-select
-              v-model.trim="user.gender"
-              :options="['Male', 'Female']"
-              id="gender"
-              outlined
-              dense
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type in gender']"
-            />
-          </div>
-          <div>
-            <label for="dob" class="text-subtitle1">Date of Birth</label>
-            <q-input v-model="user.dob" id="dob" outlined dense mask="date" :rules="['date']">
-              <template v-slot:prepend>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                    <q-date v-model="user.dob">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </div>
-          <div>
-            <label for="password" class="text-subtitle1">Password</label>
-            <q-input
-              v-model="password"
-              id="password"
-              type="password"
-              name="password"
-              outlined
-              dense
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type in password']"
-            />
-          </div>
-        </q-form>
+          </q-form>
+        </q-card-section>
       </q-card>
     </q-dialog>
     <q-dialog v-model="dialog.feedback" maximized>
@@ -264,7 +225,9 @@ export default {
       meta: { date: new Date().toISOString() }
     },
 
-    user: {}
+    user: {},
+
+    profile: {}
   }),
 
   methods: {
@@ -343,6 +306,52 @@ export default {
           message: 'Please select ' + this.report.title + ' status'
         })
       }
+    },
+
+    updateProfile () {
+      const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
+      user.name = this.user.name
+      user.phone = this.user.phone
+      database.put(user).then(response => {
+        user._rev = response.rev
+        this.$q.localStorage.set('sessionid', encode(JSON.stringify(user)))
+        this.$q.notify({
+          type: 'positive',
+          message: 'Profile updated successfully'
+        })
+        this.dialog.editProfile = !this.dialog.editProfile
+      }).catch(error => {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Unable to update profile. Please check your network and try again !'
+        })
+        return error
+      })
+    },
+
+    uploadProfilePic (file) {
+      const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
+      user._attachments = {
+        [file.name]: {
+          content_type: file.type,
+          data: file
+        }
+      }
+      console.log(user)
+      database.put(user).then(response => {
+        user._rev = response.rev
+        this.$q.localStorage.set('sessionid', encode(JSON.stringify(user)))
+        this.$q.notify({
+          type: 'positive',
+          message: 'Profile picture updated successfully'
+        })
+      }).catch(error => {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Unable to update profile pic. Please check your network and try again !'
+        })
+        return error
+      })
     }
   },
 
