@@ -28,6 +28,14 @@ const routes = [
       path: 'dashboard',
       name: 'App Dashboard',
       component: () => import('pages/user/Index')
+    }, {
+      path: 'cases',
+      name: 'App Cases',
+      component: () => import('pages/common/Cases')
+    }, {
+      path: 'profile',
+      name: 'App Profile',
+      component: () => import('pages/common/Profile')
     }]
   },
 

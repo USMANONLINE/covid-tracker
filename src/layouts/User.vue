@@ -19,7 +19,7 @@
 
     <!-- (Optional) The Footer -->
     <q-footer>
-      <q-tabs switch-indicator>
+      <q-tabs dense switch-indicator>
         <q-route-tab
           :to="{ name: 'App Dashboard' }"
           no-caps
@@ -30,7 +30,8 @@
         <q-route-tab
           no-caps
           icon="assignment"
-          to="/some/other/route"
+          :to="{ name: 'App Cases' }"
+          active-class="bg-grey"
           replace
           label="View Cases"
         />
@@ -44,7 +45,7 @@
         <q-route-tab
           no-caps
           icon="assignment"
-          to="/some/other/route"
+          :to="{ name: 'App Profile' }"
           replace
           label="Profile"
         />
@@ -65,13 +66,13 @@
           <q-item :to="{ name: 'App Dashboard' }" clickable v-ripple>
             <q-item-section>Home</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item :to="{ name: 'App Cases' }" clickable v-ripple>
             <q-item-section>View Cases</q-item-section>
           </q-item>
           <q-item clickable v-ripple>
             <q-item-section>Analysis</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item :to="{ name: 'App Profile' }" clickable v-ripple>
             <q-item-section>Profile</q-item-section>
           </q-item>
         </q-list>
