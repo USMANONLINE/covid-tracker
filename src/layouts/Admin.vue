@@ -12,53 +12,17 @@
           @click="leftDrawer = !leftDrawer"
         />
         <q-toolbar-title>
-          Header
+          Covid Report
         </q-toolbar-title>
       </q-toolbar>
-
-      <q-tabs>
-        <q-route-tab
-          icon="map"
-          to="/your/route"
-          replace
-          label="One Tab"
-        />
-        <q-route-tab
-          icon="assignment"
-          to="/some/other/route"
-          replace
-          label="Other Tab"
-        />
-      </q-tabs>
     </q-header>
 
     <!-- (Optional) The Footer -->
     <q-footer>
-      <q-tabs switch-indicator>
-        <q-route-tab
-          icon="map"
-          to="/your/route"
-          replace
-          label="One Tab"
-        />
-        <q-route-tab
-          icon="assignment"
-          to="/some/other/route"
-          replace
-          label="Other Tab"
-        />
-      </q-tabs>
 
       <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          icon="menu"
-          @click="leftDrawer = !leftDrawer"
-        />
-        <q-toolbar-title>
-          Footer
+        <q-toolbar-title class="text-subtitle1 text-center">
+          &copy; Covid Report {{ new Date().getFullYear() }}
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -69,10 +33,54 @@
       side="left"
       bordered
       content-class="bg-grey-2"
+      :width="200"
+      :breakpoint="500"
     >
       <!-- QScrollArea is optional -->
-      <q-scroll-area class="fit q-pa-sm">
-        <!-- Content here -->
+      <q-scroll-area class="fit">
+        <q-list bordered separator>
+          <q-item :to="{ name: 'Admin Dashboard' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>Dashboard</q-item-section>
+          </q-item>
+
+          <q-item :to="{ name: 'Accounts' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>Accounts</q-item-section>
+          </q-item>
+
+          <q-item :to="{ name: 'Disease & Symptom Options' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>User Options</q-item-section>
+          </q-item>
+
+          <q-item :to="{ name: 'Admin Cases' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>Cases</q-item-section>
+          </q-item>
+
+          <q-item :to="{ name: 'Administrators' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>Administrators</q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="logout" />
+            </q-item-section>
+            <q-item-section>Logout</q-item-section>
+          </q-item>
+        </q-list>
       </q-scroll-area>
     </q-drawer>
 

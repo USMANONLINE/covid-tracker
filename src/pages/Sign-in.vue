@@ -98,8 +98,18 @@ export default {
           this.$q.localStorage.set('sessionid', encode(JSON.stringify(response)))
           if (response.meta.enabled) {
             if (response.meta.stores === '_user') {
+              notif({
+                type: 'positive',
+                message: 'Account signed successfully !',
+                timeout: 3000
+              })
               this.$router.push({ name: 'App Dashboard' })
             } else {
+              notif({
+                type: 'warning',
+                message: 'Account signed successfully !',
+                timeout: 3000
+              })
               this.$router.push({ name: '' })
             }
           } else {

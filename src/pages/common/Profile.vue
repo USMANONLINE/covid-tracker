@@ -1,5 +1,13 @@
 <template>
   <q-page padding>
+    <div class="text-center q-mb-xs">
+      <q-img
+        class="rounded-borders"
+        style="width: 150px; height: 150px"
+        :src="getProfileUrl()"
+      />
+    </div>
+
     <q-list separator bordered>
       <q-item clickable v-ripple @click="dialog.editProfile = !dialog.editProfile">
         <q-item-section>Edit Profile</q-item-section>
@@ -36,7 +44,7 @@
     <q-dialog v-model="dialog.about" maximized>
       <q-card>
         <q-toolbar>
-          <q-btn round flat dense icon="person" @click="dialog.about = !dialog.about"/>
+          <q-btn round flat dense icon="west" @click="dialog.about = !dialog.about"/>
           <q-toolbar-title>About the Developer</q-toolbar-title>
         </q-toolbar>
         <q-separator />
@@ -79,7 +87,7 @@
     <q-dialog v-model="dialog.changePassword" maximized>
       <q-card>
         <q-toolbar>
-          <q-btn round flat dense icon="person" @click="dialog.changePassword = !dialog.changePassword"/>
+          <q-btn round flat dense icon="west" @click="dialog.changePassword = !dialog.changePassword"/>
           <q-toolbar-title>Change Password</q-toolbar-title>
         </q-toolbar>
         <q-card-section>
@@ -125,7 +133,7 @@
     <q-dialog v-model="dialog.editProfile" maximized>
       <q-card>
         <q-toolbar>
-          <q-btn flat round dense icon="person" @click="dialog.editProfile = !dialog.editProfile"/>
+          <q-btn flat round dense icon="west" @click="dialog.editProfile = !dialog.editProfile"/>
           <q-toolbar-title>Edit Profile</q-toolbar-title>
         </q-toolbar>
         <q-separator />
@@ -159,7 +167,7 @@
             </div>
             <div>
               <label for="profile" class="text-subtitle1">Profile Pic</label>
-              <q-file @input="uploadProfilePic" lazy-rules dense id="profile" outlined v-model="user.profile">
+              <q-file accept=".jpg, image/*" capture @input="uploadProfilePic" lazy-rules dense id="profile" outlined v-model="user.profile">
                 <template v-slot:prepend>
                   <q-icon name="attach_file" />
                 </template>
@@ -176,7 +184,7 @@
     <q-dialog v-model="dialog.feedback" maximized>
       <q-card>
         <q-toolbar>
-          <q-btn round flat dense icon="person" @click="dialog.feedback = !dialog.feedback"/>
+          <q-btn round flat dense icon="west" @click="dialog.feedback = !dialog.feedback"/>
           <q-toolbar-title>{{ report.title }}</q-toolbar-title>
         </q-toolbar>
         <q-separator/>
@@ -208,9 +216,10 @@
 <script>
 import { encode, decode } from 'js-base64'
 import bcrypt from 'bcryptjs'
-import { database } from 'boot/config'
+import { database, url } from 'boot/config'
 export default {
   data: () => ({
+    url,
     dialog: {
       about: false,
       feedback: false,
@@ -231,6 +240,13 @@ export default {
   }),
 
   methods: {
+    getProfileUrl () {
+      if (this.user.profilepic !== undefined) {
+        return this.url + this.user.profilepic.doc + '/' + this.user.profilepic.filename
+      } else {
+        return '/avatar.png'
+      }
+    },
     changePassword () {
       const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
       const authorize = bcrypt.compareSync(this.password.old, user.hash)
@@ -321,6 +337,7 @@ export default {
         })
         this.dialog.editProfile = !this.dialog.editProfile
       }).catch(error => {
+        console.log(error)
         this.$q.notify({
           type: 'negative',
           message: 'Unable to update profile. Please check your network and try again !'
@@ -331,15 +348,19 @@ export default {
 
     uploadProfilePic (file) {
       const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
-      user._attachments = {
-        [file.name]: {
-          content_type: file.type,
-          data: file
+      const profile = {
+        _id: 'profilepic:' + new Date().toISOString(),
+        _attachments: {
+          [file.name]: {
+            content_type: file.type,
+            data: file
+          }
         }
       }
-      console.log(user)
-      database.put(user).then(response => {
-        user._rev = response.rev
+      user.profilepic = { doc: profile._id, filename: file.name }
+      database.bulkDocs([user, profile]).then(response => {
+        const userRev = response.find(doc => doc.id === user._id)
+        user._rev = userRev.rev
         this.$q.localStorage.set('sessionid', encode(JSON.stringify(user)))
         this.$q.notify({
           type: 'positive',

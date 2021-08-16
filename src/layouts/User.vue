@@ -36,9 +36,9 @@
           label="View Cases"
         />
         <q-route-tab
+          :to="{ name: 'App Profile' }"
           no-caps
           icon="map"
-          to="/your/route"
           replace
           label="Analysis"
         />
@@ -69,7 +69,7 @@
           <q-item :to="{ name: 'App Cases' }" clickable v-ripple>
             <q-item-section>View Cases</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple :to="{ name: 'App Profile' }">
             <q-item-section>Analysis</q-item-section>
           </q-item>
           <q-item :to="{ name: 'App Profile' }" clickable v-ripple>

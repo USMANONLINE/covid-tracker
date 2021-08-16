@@ -118,6 +118,7 @@ import { encode } from 'js-base64'
 export default {
   data: () => ({
     user: {
+      reports: 0,
       meta: {
         stores: '_user',
         enabled: true,

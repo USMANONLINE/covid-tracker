@@ -18,6 +18,22 @@ const routes = [
       path: 'dashboard',
       name: 'Admin Dashboard',
       component: () => import('pages/admin/Index')
+    }, {
+      path: 'accounts',
+      name: 'Accounts',
+      component: () => import('pages/admin/Accounts')
+    }, {
+      path: 'disease',
+      name: 'Disease & Symptom Options',
+      component: () => import('pages/admin/Disease')
+    }, {
+      path: 'cases',
+      name: 'Admin Cases',
+      component: () => import('pages/common/Cases')
+    }, {
+      path: 'administrators',
+      name: 'Administrators',
+      component: () => import('pages/admin/Administrators')
     }]
   },
 
