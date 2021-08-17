@@ -12,6 +12,7 @@
             <div>
               <label for="full-name" class="text-subtitle1">Full Name</label>
               <q-input
+                autofocus
                 v-model.trim="user.name"
                 id="full-name"
                 type="text"
@@ -154,7 +155,8 @@ export default {
     user: {
       meta: {
         stores: '_admin',
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        enabled: true
       }
     },
     password: '',
@@ -187,7 +189,14 @@ export default {
           timeout: 3000
         })
         this.user._rev = response.rev
-        this.$store.commit('initRecords', this.user)
+        this.$store.commit('addToRecords', this.user)
+        this.user = {
+          meta: {
+            stores: '_admin',
+            date: new Date().toISOString(),
+            enabled: true
+          }
+        }
         this.dialog.newAccount = !this.dialog.newAccount
       }).catch(error => {
         this.$q.notify({

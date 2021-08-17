@@ -103,14 +103,14 @@ export default {
                 message: 'Account signed successfully !',
                 timeout: 3000
               })
-              this.$router.push({ name: 'App Dashboard' })
+              this.$router.push({ name: 'App Dashboard', query: { account: response._id } })
             } else {
               notif({
-                type: 'warning',
-                message: 'Account signed successfully !',
+                type: 'positive',
+                message: 'logged in successfully !',
                 timeout: 3000
               })
-              this.$router.push({ name: '' })
+              this.$router.push({ name: 'Admin Dashboard' })
             }
           } else {
             notif({

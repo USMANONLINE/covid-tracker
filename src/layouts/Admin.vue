@@ -46,6 +46,13 @@
             <q-item-section>Dashboard</q-item-section>
           </q-item>
 
+          <q-item :to="{ name: 'Admin Feedback' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="group" />
+            </q-item-section>
+            <q-item-section>Feedback</q-item-section>
+          </q-item>
+
           <q-item :to="{ name: 'Accounts' }" clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="group" />

@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <!-- content -->
+    <p>Welcome A</p>
   </q-page>
 </template>
 
