@@ -78,20 +78,70 @@
       </q-tab-panel>
 
       <q-tab-panel name="alarms">
-        <div class="text-h6">Alarms</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+       <q-list padding>
+           <q-item bordered class="shadow-2 rounded-borders">
+             <q-item-section top thumbnail class="q-ml-none">
+               <img src="https://cdn.quasar.dev/img/mountains.jpg">
+             </q-item-section>
+
+             <q-item-section>
+               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
+               <q-item-label caption>
+               <span class="float-left" >
+                 <div>
+                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
+                 </div>
+               </span>
+                 <span class="float-right" >
+                     <div>
+                <q-btn no-caps  dense flat label="Status" icon="error" />
+                 </div>
+               </span>
+               </q-item-label>
+             </q-item-section>
+
+             <q-item-section side>
+               <q-icon name="chevron_right" color="grey" />
+             </q-item-section>
+           </q-item>
+           <q-item bordered class="shadow-2 rounded-borders">
+             <q-item-section top thumbnail class="q-ml-none">
+               <img src="https://cdn.quasar.dev/img/mountains.jpg">
+             </q-item-section>
+
+             <q-item-section>
+               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
+               <q-item-label caption>
+               <span class="float-left" >
+                 <div>
+                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
+                 </div>
+               </span>
+                 <span class="float-right" >
+                     <div>
+                <q-btn no-caps  dense flat label="Status" icon="error" />
+                 </div>
+               </span>
+               </q-item-label>
+             </q-item-section>
+
+             <q-item-section side>
+               <q-icon name="chevron_right" color="grey" />
+             </q-item-section>
+           </q-item>
+       </q-list>
       </q-tab-panel>
     </q-tab-panels>
 
     <q-dialog v-model="dialog.newCase" maximized>
-      <q-card>
+      <q-card >
         <q-toolbar>
           <q-btn @click="dialog.newCase = !dialog.newCase" flat round dense icon="west"/>
           <q-toolbar-title>New Case</q-toolbar-title>
         </q-toolbar>
         <q-separator/>
-        <q-card-section>
-          <q-form @submit.prevent="sendReport">
+        <q-card-section class="q-pa-md">
+          <q-form @submit.prevent="sendReport" class="q-pa-md">
             <q-input
               v-model.trim="report.name"
               label="Patients Name"
@@ -139,7 +189,11 @@
               outlined
               :options="['Early signs', 'Feverish', 'Critical']"
               :rules="[ val => val && val.length > 0 || 'Please select condition']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="sort" />
+              </template>
+            </q-select>
             <q-select
               v-model="report.likely_disease"
               @filter="loadDiseases"
@@ -149,7 +203,11 @@
               lazy-rules
               label="Likely Disease"
               :rules="[ val => val && val.length > 0 || 'Please select likely disease']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="bug_report" />
+              </template>
+            </q-select>
             <q-select
               v-model="report.symptom"
               @filter="loadSymptoms"
@@ -159,7 +217,11 @@
               lazy-rules
               label="Symptoms"
               :rules="[ val => val && val.length > 0 || 'Please select symptoms']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="sentiment_dissatisfied" />
+              </template>
+            </q-select>
             <q-file
               @input="uploadPatientPic"
               v-model="report.picture"
@@ -170,7 +232,11 @@
               accept=".jpg, image/*"
               capture
               class="q-mb-sm"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="add_a_photo" />
+              </template>
+            </q-file>
             <q-select
               :options="Object.keys(states)"
               v-model="report.state"
@@ -205,8 +271,15 @@
               label="Patients House Address"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in address']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="home" />
+              </template>
+            </q-input>
             <q-btn
+              no-caps
+              color="primary"
+              class="full-width q-pa-sm"
               label="Send"
               type="submit"
             />
@@ -439,7 +512,7 @@
     </q-dialog>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn @click="dialog.newCase = !dialog.newCase" fab icon="add" color="accent" />
+      <q-btn @click="dialog.newCase = !dialog.newCase" fab icon="add" color="primary" />
     </q-page-sticky>
   </q-page>
 </template>

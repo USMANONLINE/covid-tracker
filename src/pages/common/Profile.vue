@@ -10,36 +10,65 @@
 
     <q-list separator bordered>
       <q-item clickable v-ripple @click="dialog.editProfile = !dialog.editProfile">
+        <q-item-section avatar>
+          <q-avatar  icon="account_circle" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Edit Profile</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="dialog.changePassword = !dialog.changePassword">
+        <q-item-section avatar>
+          <q-avatar  icon="lock" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Change Password</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="report.title = 'Feedback', dialog.feedback = !dialog.feedback">
+        <q-item-section avatar>
+          <q-avatar  icon="textsms" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Feedback</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="report.title = 'Technical Support', dialog.feedback = !dialog.feedback">
+        <q-item-section avatar>
+          <q-avatar  icon="mail" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Technical Support</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="dialog.about = !dialog.about">
+        <q-item-section avatar>
+          <q-avatar  icon="info" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>About the Developer</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
     </q-list>
+
+    <q-btn
+      color="primary"
+      no-caps
+      type="submit"
+      label="Logout"
+      icon="power_settings_new"
+      class="full-width q-pa-xs"
+    />
 
     <q-dialog v-model="dialog.about" maximized>
       <q-card>
@@ -52,7 +81,7 @@
           <q-list bordered separator>
             <q-item>
               <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="phone" />
+                <q-avatar color="grey-8" text-color="white" icon="phone" />
               </q-item-section>
 
               <q-item-section>
@@ -62,7 +91,7 @@
             </q-item>
             <q-item>
               <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="email" />
+                <q-avatar color="grey-8" text-color="white" icon="email" />
               </q-item-section>
 
               <q-item-section>
@@ -72,7 +101,7 @@
             </q-item>
             <q-item>
               <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="phone" />
+                <q-avatar color="grey-8" text-color="white" icon="phone" />
               </q-item-section>
 
               <q-item-section>

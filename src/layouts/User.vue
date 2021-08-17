@@ -19,11 +19,11 @@
 
     <!-- (Optional) The Footer -->
     <q-footer>
-      <q-tabs dense switch-indicator>
+      <q-tabs dense  class="bg-white text-primary">
         <q-route-tab
           :to="{ name: 'App Dashboard' }"
           no-caps
-          icon="map"
+          icon="home"
           replace
           label="Home"
         />
@@ -33,18 +33,18 @@
           :to="{ name: 'App Cases' }"
           active-class="bg-grey"
           replace
-          label="View Cases"
+          label="Cases"
         />
         <q-route-tab
           :to="{ name: 'App Profile' }"
           no-caps
-          icon="map"
+          icon="poll"
           replace
           label="Analysis"
         />
         <q-route-tab
           no-caps
-          icon="assignment"
+          icon="account_circle"
           :to="{ name: 'App Profile' }"
           replace
           label="Profile"

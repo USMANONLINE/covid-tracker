@@ -16,7 +16,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in fullname']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="account_circle" />
+              </template>
+            </q-input>
           </div>
           <div>
             <label for="email" class="text-subtitle1">Email Address</label>
@@ -29,7 +33,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in email']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="mail" />
+              </template>
+            </q-input>
           </div>
           <div>
             <label for="phone" class="text-subtitle1">Phone Number</label>
@@ -42,7 +50,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in phone number']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="phone" />
+              </template>
+            </q-input>
           </div>
           <div>
             <label for="gender" class="text-subtitle1">Gender</label>
@@ -54,7 +66,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in gender']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="wc" />
+              </template>
+            </q-select>
           </div>
           <div>
             <label for="dob" class="text-subtitle1">Date of Birth</label>
@@ -83,12 +99,19 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in password']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+            </q-input>
           </div>
           <q-btn
+            no-caps
+            color="primary"
+            icon="person_add"
             type="submit"
             label="Register"
-            class="full-width"
+            class="full-width q-pa-xs "
           />
         </q-form>
       </q-card-section>
@@ -100,6 +123,8 @@
           <div class="col text-center">
             <q-btn
               flat
+              class="text-primary"
+              icon-right="chevron_right"
               no-caps
               label="Login here"
               :to="{ name: 'Sign-in' }"

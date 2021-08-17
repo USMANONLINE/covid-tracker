@@ -1,10 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <q-card flat style="width: 450px">
+      <q-card-section class="text-center">
+        <q-avatar size="100px" font-size="52px" color="primary" text-color="white" icon="science" />
+      </q-card-section>
       <q-card-section>
         <div class="text-center">Welcome back !</div>
         <div class="text-center text-subtitle1 text-bold">Login to your account</div>
-        <q-form @submit.prevent="login">
+        <q-form @submit.prevent="login" class="q-pa-sm">
           <div>
             <label for="email" class="text-subtitle1">Email Address</label>
             <q-input
@@ -16,7 +19,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in email']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="mail" />
+              </template>
+            </q-input>
           </div>
           <div>
             <label for="password" class="text-subtitle1">Password</label>
@@ -29,11 +36,16 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in password']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
+            </q-input>
           </div>
           <div class="row">
             <div class="col">
               <q-checkbox
+                class="text-grey"
                 v-model="user.rememberMe"
                 label="Remember Me"
               />
@@ -43,16 +55,19 @@
                 flat
                 dense
                 no-caps
-                class="q-mt-xs float-right"
+                class="q-mt-xs float-right text-grey"
                 label="Forgot Password"
                 :to="{ name: 'Forgot-Password' }"
               />
             </div>
           </div>
           <q-btn
+            color="primary"
+            no-caps
             type="submit"
             label="Login"
-            class="full-width"
+            icon="logout"
+            class="full-width q-pa-xs"
           />
         </q-form>
       </q-card-section>
@@ -63,11 +78,14 @@
           </div>
           <div class="col text-center">
             <q-btn
+              class="text-primary"
               flat
+              icon-right="chevron_right"
               no-caps
               label="Register here"
               :to="{ name: 'Sign-up' }"
-            />
+            >
+            </q-btn>
           </div>
         </div>
       </q-card-actions>
