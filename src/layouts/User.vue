@@ -19,9 +19,9 @@
 
     <!-- (Optional) The Footer -->
     <q-footer>
-      <q-tabs dense  class="bg-white text-primary">
+      <q-tabs dense  class="bg-white text-primary q-pa-xs">
         <q-route-tab
-          :to="{ name: 'App Dashboard' }"
+          :to="{ name: 'App Dashboard', query: { account: user._id } }"
           no-caps
           icon="home"
           replace
@@ -30,17 +30,17 @@
         <q-route-tab
           no-caps
           icon="assignment"
-          :to="{ name: 'App Cases' }"
+          :to="{ name: 'App Cases', query: { account: user._id } }"
           active-class="bg-grey"
           replace
-          label="Cases"
+          label="Reports"
         />
         <q-route-tab
-          :to="{ name: 'App Profile' }"
+          :to="{ name: 'App Notification' }"
           no-caps
-          icon="poll"
+          icon="notifications"
           replace
-          label="Analysis"
+          label="Alerts"
         />
         <q-route-tab
           no-caps
@@ -63,17 +63,35 @@
       <!-- QScrollArea is optional -->
       <q-scroll-area class="fit">
         <q-list separator>
-          <q-item :to="{ name: 'App Dashboard' }" clickable v-ripple>
+          <q-item :to="{ name: 'App Dashboard', query: { account: user._id } }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="home" />
+            </q-item-section>
             <q-item-section>Home</q-item-section>
           </q-item>
-          <q-item :to="{ name: 'App Cases' }" clickable v-ripple>
-            <q-item-section>View Cases</q-item-section>
+          <q-item :to="{ name: 'App Cases', query: { account: user._id } }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="assignment" />
+            </q-item-section>
+            <q-item-section>Reports</q-item-section>
           </q-item>
-          <q-item clickable v-ripple :to="{ name: 'App Profile' }">
-            <q-item-section>Analysis</q-item-section>
+          <q-item clickable v-ripple :to="{ name: 'App Notification' }">
+            <q-item-section avatar>
+              <q-icon name="notifications" />
+            </q-item-section>
+            <q-item-section>Notifications</q-item-section>
           </q-item>
           <q-item :to="{ name: 'App Profile' }" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="account_circle" />
+            </q-item-section>
             <q-item-section>Profile</q-item-section>
+          </q-item>
+          <q-item @click="logUserOut" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="logout" />
+            </q-item-section>
+            <q-item-section>Logout</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -87,13 +105,25 @@
 </template>
 
 <script>
+import { decode } from 'js-base64'
 export default {
-  // name: 'LayoutName',
 
   data () {
     return {
+      user: {},
       leftDrawer: true
     }
+  },
+
+  methods: {
+    logUserOut () {
+      this.$q.localStorage.remove('sessionid')
+      this.$router.push({ name: 'Home' })
+    }
+  },
+
+  mounted () {
+    this.user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
-  <q-page>
+  <q-page padding>
     <q-tabs
+      v-if="$route.name === 'App Cases'"
       v-model="tab"
       dense
       class="text-grey"
@@ -13,11 +14,17 @@
       <q-tab name="alarms" label="Public Reports" />
     </q-tabs>
 
-    <q-separator />
+    <q-separator v-if="$route.name === 'App Cases'" />
 
-    <q-tab-panels v-model="tab" animated>
+    <q-tab-panels v-if="$route.name === 'App Cases'" v-model="tab" animated>
       <q-tab-panel name="mails">
-        <q-card v-for="(covidReport, covidReportId) in $store.state.records.docs" :key="covidReportId">
+        <q-banner v-if="myReports.length === 0" inline-actions class="text-white bg-primary shadow-2">
+          You have no reports
+          <template v-slot:action>
+            <q-btn no-caps @click="dialog.newCase = !dialog.newCase" outline color="white" label="Report case" />
+          </template>
+        </q-banner>
+        <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in myReports" :key="covidReportId">
           <q-card-section horizontal>
             <div>
               <img
@@ -48,8 +55,8 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.address }}</q-item-label>
-                  <q-item-label caption lines="2">Address</q-item-label>
+                  <q-item-label>{{ covidReport.condition }}</q-item-label>
+                  <q-item-label caption lines="1">Condition</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -61,8 +68,75 @@
                 </q-item-section>
 
                 <q-item-section>
+                  <q-item-label>{{ covidReport.address }}</q-item-label>
+                  <q-item-label caption lines="2">Address</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+          <q-separator />
+          <q-card-actions align="right">
+            <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
+            <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
+            <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
+            <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
+          </q-card-actions>
+        </q-card>
+      </q-tab-panel>
+
+      <q-tab-panel name="alarms">
+        <q-banner v-if="publicReports.length === 0" inline-actions class="text-white bg-primary shadow-2">
+          No public reports yet
+          <template v-slot:action>
+            <q-btn no-caps  @click="dialog.newCase = !dialog.newCase" outline  color="white" label="Report case" />
+          </template>
+        </q-banner>
+        <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in publicReports" :key="covidReportId">
+          <q-card-section horizontal>
+            <div>
+              <img
+                :src="getUrl(covidReport)"
+                style="height: 170px;"
+                class="rounded-borders q-pa-xs"
+              />
+            </div>
+            <q-list style="width: 100%" separator bordered>
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="primary" text-color="white">
+                    <q-icon name="person"/>
+                  </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
                   <q-item-label>{{ covidReport.name }}</q-item-label>
                   <q-item-label caption lines="1">Full Name</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="primary" text-color="white">
+                    <q-icon name="person"/>
+                  </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ covidReport.condition }}</q-item-label>
+                  <q-item-label caption lines="1">Condition</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="primary" text-color="white">
+                    <q-icon name="person"/>
+                  </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ covidReport.address }}</q-item-label>
+                  <q-item-label caption lines="2">Address</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -132,6 +206,67 @@
        </q-list>
       </q-tab-panel>
     </q-tab-panels>
+
+    <template v-if="$route.name === 'Admin Cases'">
+      <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in $store.state.records.docs" :key="covidReportId">
+        <q-card-section horizontal>
+          <div>
+            <img
+              :src="getUrl(covidReport)"
+              style="height: 170px;"
+              class="rounded-borders q-pa-xs"
+            />
+          </div>
+          <q-list style="width: 100%" separator bordered>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-avatar color="primary" text-color="white">
+                  <q-icon name="person"/>
+                </q-avatar>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>{{ covidReport.name }}</q-item-label>
+                <q-item-label caption lines="1">Full Name</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-avatar color="primary" text-color="white">
+                  <q-icon name="person"/>
+                </q-avatar>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>{{ covidReport.condition }}</q-item-label>
+                <q-item-label caption lines="1">Condition</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-avatar color="primary" text-color="white">
+                  <q-icon name="person"/>
+                </q-avatar>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>{{ covidReport.address }}</q-item-label>
+                <q-item-label caption lines="2">Address</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right">
+          <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
+          <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
+          <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
+          <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
+        </q-card-actions>
+      </q-card>
+    </template>
 
     <q-dialog v-model="dialog.newCase" maximized>
       <q-card >
@@ -564,10 +699,31 @@ export default {
     symptoms: []
   }),
 
+  computed: {
+    myReports () {
+      let userid = this.$route.query.account
+      let reports = []
+      const filteredReports = this.$store.state.records.docs.filter(doc => String(doc.meta.sentBy) === userid)
+      if (filteredReports.length > 0) {
+        reports = filteredReports
+      }
+      return reports
+    },
+    publicReports () {
+      let userid = this.$route.query.account
+      let reports = []
+      const filteredReports = this.$store.state.records.docs.filter(doc => String(doc.meta.sentBy) !== userid)
+      if (filteredReports.length > 0) {
+        reports = filteredReports
+      }
+      return reports
+    }
+  },
+
   methods: {
     sendReport () {
       const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
-      this.report.meta.sentBy = user._id
+      this.report.meta.sentBy = this.$route.query.account
       database.put(this.report).then(response => {
         this.report._rev = response.rev
         this.$store.commit('addToRecords', response)

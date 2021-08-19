@@ -1,6 +1,9 @@
 <template>
   <q-page class="flex flex-center">
     <q-card flat style="width: 450px">
+      <q-card-section class="text-center">
+        <q-avatar size="100px" font-size="52px" color="primary" text-color="white" icon="science" />
+      </q-card-section>
       <q-card-section>
         <div class="text-center">It's totally Free !</div>
         <div class="text-center text-subtitle1 text-bold">Create your account</div>

@@ -34,6 +34,10 @@ const routes = [
       path: 'administrators',
       name: 'Administrators',
       component: () => import('pages/admin/Administrators')
+    }, {
+      path: 'feedback',
+      name: 'Admin Feedback',
+      component: () => import('pages/Feedback')
     }]
   },
 
@@ -52,6 +56,10 @@ const routes = [
       path: 'profile',
       name: 'App Profile',
       component: () => import('pages/common/Profile')
+    }, {
+      path: 'notification',
+      name: 'App Notification',
+      component: () => import('pages/Notification')
     }]
   },
 
