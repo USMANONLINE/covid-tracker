@@ -1,8 +1,30 @@
 <template>
   <q-page padding>
-    <q-banner v-if="$store.state.records.docs.length === 0" inline-actions class="text-white text-center bg-info">
+    <q-banner v-if="$store.state.records.docs.length === 0" inline-actions class="q-mt-xl text-white text-center bg-info">
       No New Notifications Available !
     </q-banner>
+
+    <q-card class="my-card rounded-borders q-pa-md q-mt-md">
+      <q-toolbar class="text-primary">
+        <q-avatar color="primary">
+          <q-icon class="text-white" color="white" name="person" />
+        </q-avatar>
+        <span class="q-ml-sm">NCDC Kano Headquarter</span>
+        <!--        <q-btn flat round dense icon="person" />-->
+        <q-toolbar-title>
+        </q-toolbar-title>
+        <q-btn no-caps flat round dense label="2 days" />
+      </q-toolbar>
+      <q-card-section class="text-grey">
+        There is a likely contagious heart disease noticed around Kano Metropolitan and other part of the North Central of the state.
+        We are advising the public to do a proper washing and other ways of preventing
+      </q-card-section>
+        <img src="https://cdn.quasar.dev/img/parallax2.jpg">
+      <q-card-actions align="around">
+        <q-btn icon="favorite" color="primary"  label="609" flat></q-btn>
+        <q-btn icon="share" color="primary"  label="Share" no-caps flat></q-btn>
+      </q-card-actions>
+    </q-card>
 
     <q-list separator v-if="$store.state.records.docs.length > 0" bordered class="rounded-borders">
       <q-item-label header>Notifications ({{ $store.state.records.docs.length }})</q-item-label>

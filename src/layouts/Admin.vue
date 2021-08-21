@@ -81,7 +81,7 @@
             <q-item-section>Administrators</q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="logUserOut">
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
@@ -106,6 +106,13 @@ export default {
   data () {
     return {
       leftDrawer: true
+    }
+  },
+
+  methods: {
+    logUserOut () {
+      this.$q.localStorage.remove('sessionid')
+      this.$router.push({ name: 'Home' })
     }
   }
 }

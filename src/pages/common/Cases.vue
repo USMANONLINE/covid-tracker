@@ -18,10 +18,10 @@
 
     <q-tab-panels v-if="$route.name === 'App Cases'" v-model="tab" animated>
       <q-tab-panel name="mails">
-        <q-banner v-if="myReports.length === 0" inline-actions class="text-white bg-info">
+        <q-banner v-if="myReports.length === 0" inline-actions class="text-white bg-primary shadow-2">
           You have no reports
           <template v-slot:action>
-            <q-btn @click="dialog.newCase = !dialog.newCase" outline color="white" label="New Report" />
+            <q-btn no-caps @click="dialog.newCase = !dialog.newCase" outline color="white" label="Report case" />
           </template>
         </q-banner>
         <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in myReports" :key="covidReportId">
@@ -68,8 +68,8 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.address }}</q-item-label>
-                  <q-item-label caption lines="2">Address</q-item-label>
+                  <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>
+                  <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -85,10 +85,10 @@
       </q-tab-panel>
 
       <q-tab-panel name="alarms">
-        <q-banner v-if="publicReports.length === 0" inline-actions class="text-white bg-info">
-          No reports made by the public
+        <q-banner v-if="publicReports.length === 0" inline-actions class="text-white bg-primary shadow-2">
+          No public reports yet
           <template v-slot:action>
-            <q-btn @click="dialog.newCase = !dialog.newCase" outline color="white" label="New Report" />
+            <q-btn no-caps  @click="dialog.newCase = !dialog.newCase" outline  color="white" label="Report case" />
           </template>
         </q-banner>
         <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in publicReports" :key="covidReportId">
@@ -135,8 +135,8 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.address }}</q-item-label>
-                  <q-item-label caption lines="2">Address</q-item-label>
+                  <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>
+                  <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -146,9 +146,64 @@
             <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
             <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
             <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
-            <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
+<!--            <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>-->
           </q-card-actions>
         </q-card>
+      </q-tab-panel>
+
+      <q-tab-panel name="alarms">
+       <q-list padding>
+           <q-item bordered class="shadow-2 rounded-borders">
+             <q-item-section top thumbnail class="q-ml-none">
+               <img src="https://cdn.quasar.dev/img/mountains.jpg">
+             </q-item-section>
+
+             <q-item-section>
+               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
+               <q-item-label caption>
+               <span class="float-left" >
+                 <div>
+                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
+                 </div>
+               </span>
+                 <span class="float-right" >
+                     <div>
+                <q-btn no-caps  dense flat label="Status" icon="error" />
+                 </div>
+               </span>
+               </q-item-label>
+             </q-item-section>
+
+             <q-item-section side>
+               <q-icon name="chevron_right" color="grey" />
+             </q-item-section>
+           </q-item>
+           <q-item bordered class="shadow-2 rounded-borders">
+             <q-item-section top thumbnail class="q-ml-none">
+               <img src="https://cdn.quasar.dev/img/mountains.jpg">
+             </q-item-section>
+
+             <q-item-section>
+               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
+               <q-item-label caption>
+               <span class="float-left" >
+                 <div>
+                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
+                 </div>
+               </span>
+                 <span class="float-right" >
+                     <div>
+                <q-btn no-caps  dense flat label="Status" icon="error" />
+                 </div>
+               </span>
+               </q-item-label>
+             </q-item-section>
+
+             <q-item-section side>
+               <q-icon name="chevron_right" color="grey" />
+             </q-item-section>
+           </q-item>
+       </q-list>
       </q-tab-panel>
     </q-tab-panels>
 
@@ -197,8 +252,8 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>{{ covidReport.address }}</q-item-label>
-                <q-item-label caption lines="2">Address</q-item-label>
+                <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>
+                <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -214,14 +269,14 @@
     </template>
 
     <q-dialog v-model="dialog.newCase" maximized>
-      <q-card>
+      <q-card >
         <q-toolbar>
           <q-btn @click="dialog.newCase = !dialog.newCase" flat round dense icon="west"/>
           <q-toolbar-title>New Case</q-toolbar-title>
         </q-toolbar>
         <q-separator/>
-        <q-card-section>
-          <q-form @submit.prevent="sendReport">
+        <q-card-section class="q-pa-md">
+          <q-form @submit.prevent="sendReport" class="q-pa-md">
             <q-input
               v-model.trim="report.name"
               label="Patients Name"
@@ -269,7 +324,7 @@
               outlined
               :options="['Early signs', 'Feverish', 'Critical']"
               :rules="[ val => val && val.length > 0 || 'Please select condition']"
-            />
+            >
 <!--            <q-select-->
 <!--              v-model="report.likely_disease"-->
 <!--              @filter="loadDiseases"-->
@@ -280,6 +335,11 @@
 <!--              label="Likely Disease"-->
 <!--              :rules="[ val => val && val.length > 0 || 'Please select likely disease']"-->
 <!--            />-->
+            >
+              <template v-slot:prepend>
+                <q-icon name="sort" />
+              </template>
+            </q-select>
             <q-select
               multiple
               v-model="report.symptoms"
@@ -291,7 +351,11 @@
               label="Symptoms"
               :rules="[ val => val && val.length > 3 || 'Please select symptoms']"
               hint="Please select atleast 4 options"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="bug_report" />
+              </template>
+            </q-select>
             <q-select
               multiple
               v-model="report.other_symptom"
@@ -305,7 +369,11 @@
               use-input
               use-chips
               new-value-mode="add-unique"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="sentiment_dissatisfied" />
+              </template>
+            </q-select>
             <q-file
               @input="uploadPatientPic"
               v-model="report.picture"
@@ -316,7 +384,11 @@
               accept=".jpg, image/*"
               capture
               class="q-mb-sm"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="add_a_photo" />
+              </template>
+            </q-file>
             <q-select
               :options="Object.keys(states)"
               v-model="report.state"
@@ -351,8 +423,15 @@
               label="Patients House Address"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in address']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="home" />
+              </template>
+            </q-input>
             <q-btn
+              no-caps
+              color="primary"
+              class="full-width q-pa-sm"
               label="Send"
               type="submit"
             />
@@ -434,7 +513,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple v-if="$store.state.record.possible_disease !== ''">
             <q-item-section avatar>
               <q-avatar color="primary" text-color="white">
                 <q-icon name="person"/>
@@ -442,8 +521,8 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>{{ $store.state.record.likely_disease }}</q-item-label>
-              <q-item-label caption lines="2">Likely Disease</q-item-label>
+              <q-item-label>{{ String($store.state.record.possible_disease).toUpperCase() }}</q-item-label>
+              <q-item-label caption lines="2">Possible Disease</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -455,8 +534,25 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>{{ $store.state.record.symptom }}</q-item-label>
-              <q-item-label caption lines="2">Symptom</q-item-label>
+              <q-item-label>
+                <q-chip v-for="(syms, sysmId) in $store.state.record.symptoms" :key="sysmId">{{ syms }}</q-chip>
+              </q-item-label>
+              <q-item-label caption lines="2">Symptoms</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-avatar color="primary" text-color="white">
+                <q-icon name="person"/>
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>
+                <q-chip v-for="(osyms, osysmId) in $store.state.record.other_symptom" :key="osysmId">{{ osyms }}</q-chip>
+              </q-item-label>
+              <q-item-label caption lines="2">Other Symptom</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -585,7 +681,7 @@
     </q-dialog>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn @click="dialog.newCase = !dialog.newCase" fab icon="add" color="accent" />
+      <q-btn @click="dialog.newCase = !dialog.newCase" fab icon="add" color="primary" />
     </q-page-sticky>
   </q-page>
 </template>
@@ -596,7 +692,7 @@ import {decode, encode} from "js-base64";
 import states from '../../states'
 
 export default {
-  preFetch ({ store }) {
+  preFetch ({ store, currentRoute }) {
     store.dispatch('queryRecords', {
       selector: {
         'meta.stores': '_casereport'

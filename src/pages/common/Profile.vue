@@ -1,92 +1,137 @@
 <template>
-  <q-page padding>
-    <div class="text-center q-mb-xs">
+  <q-page padding class="q-pa-md">
+    <q-card flat class="text-center q-mb-xs">
       <q-img
         class="rounded-borders"
         style="width: 150px; height: 150px"
         :src="getProfileUrl()"
       />
-    </div>
-
-    <q-list separator bordered>
+      <q-card-section class="bg-primary text-white rounded-borders q-card">
+        <div class="text-h6 text-weight-bold">{{ user.name }}</div>
+        <div class="text-subtitle2">{{ user.email }}</div>
+        <div class="text-subtitle2">{{user.phone }}</div>
+      </q-card-section>
+    </q-card>
+    <q-list separator >
       <q-item clickable v-ripple @click="dialog.editProfile = !dialog.editProfile">
+        <q-item-section avatar>
+          <q-avatar  icon="account_circle" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Edit Profile</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="dialog.changePassword = !dialog.changePassword">
+        <q-item-section avatar>
+          <q-avatar  icon="lock" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Change Password</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="report.title = 'Feedback', dialog.feedback = !dialog.feedback">
+        <q-item-section avatar>
+          <q-avatar  icon="textsms" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Feedback</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="report.title = 'Technical Support', dialog.feedback = !dialog.feedback">
+        <q-item-section avatar>
+          <q-avatar  icon="mail" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>Technical Support</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple @click="dialog.about = !dialog.about">
+        <q-item-section avatar>
+          <q-avatar  icon="info" text-color="grey-8">
+          </q-avatar>
+        </q-item-section>
         <q-item-section>About the Developer</q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" name="bluetooth" />
+          <q-icon color="grey-8" name="chevron_right" />
         </q-item-section>
       </q-item>
     </q-list>
-
-    <q-dialog v-model="dialog.about" maximized>
+    <q-btn
+      color="primary"
+      no-caps
+      type="submit"
+      label="Logout"
+      icon="power_settings_new"
+      class="full-width q-pa-xs q-mt-lg"
+    />
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.about" maximized>
       <q-card>
         <q-toolbar>
           <q-btn round flat dense icon="west" @click="dialog.about = !dialog.about"/>
           <q-toolbar-title>About the Developer</q-toolbar-title>
         </q-toolbar>
+        <q-img src="https://cdn.quasar.dev/img/mountains.jpg">
+          <div class="absolute-bottom">
+            <div class="text-h6">Abdullahi Umar Farouq</div>
+            <div class="text-subtitle2">Bsc. Information Technology, YUMSUK-Nigeria</div>
+          </div>
+        </q-img>
         <q-separator />
         <q-card-section>
-          <q-list bordered separator>
-            <q-item>
-              <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="phone" />
-              </q-item-section>
+<!--          <h5>Abdullahi Umar Farouq</h5>-->
+<!--          <p>Bsc. Information Technology, YUMSUK-Nigeria</p>-->
+          <q-list  separator >
+            <q-card  bordered flat class="bg-grey-1 rounded-borders ">
+              <q-item class="text-primary">
+                <q-item-section top avatar>
+                  <q-avatar  text-color="primary" icon="phone" />
+                </q-item-section>
 
-              <q-item-section>
-                <q-item-label>+2348165734509</q-item-label>
-                <q-item-label caption>Mobile</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item>
+                <q-item-section>
+                  <q-item-label>+2348165734509</q-item-label>
+                  <q-item-label caption class="text-primary">Mobile</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-card>
+            <q-card bordered flat  class="bg-grey-1 rounded-borders q-mt-md ">
+            <q-item class="text-primary">
               <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="email" />
+                <q-avatar  text-color="primary" icon="email" />
               </q-item-section>
 
               <q-item-section>
                 <q-item-label>ffabdullahi@gmail.com</q-item-label>
-                <q-item-label caption>Email Address</q-item-label>
+                <q-item-label caption class="text-primary">Email Address</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item>
+            </q-card>
+            <q-card  bordered flat class="bg-grey-1 rounded-borders q-mt-md ">
+            <q-item class="text-primary">
               <q-item-section top avatar>
-                <q-avatar color="primary" text-color="white" icon="phone" />
+                <q-avatar  text-color="primary" icon="phone" />
               </q-item-section>
 
               <q-item-section>
                 <q-item-label>+2348165734509</q-item-label>
-                <q-item-label caption>WhatsApp Messenger</q-item-label>
+                <q-item-label caption class="text-primary">WhatsApp Messenger</q-item-label>
               </q-item-section>
             </q-item>
+            </q-card>
           </q-list>
         </q-card-section>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="dialog.changePassword" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.changePassword" maximized>
       <q-card>
-        <q-toolbar>
+        <q-toolbar elevated>
           <q-btn round flat dense icon="west" @click="dialog.changePassword = !dialog.changePassword"/>
           <q-toolbar-title>Change Password</q-toolbar-title>
         </q-toolbar>
@@ -101,7 +146,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in old password']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon color="primary" name="lock_open" />
+              </template>
+            </q-input>
             <q-input
               v-model.trim="password.new"
               type="password"
@@ -111,7 +160,11 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in new password']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon color="primary" name="lock" />
+              </template>
+            </q-input>
             <q-input
               v-model.trim="password.confirm"
               type="password"
@@ -121,8 +174,15 @@
               dense
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type in confirm password']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon color="primary" name="lock" />
+              </template>
+            </q-input>
             <q-btn
+              color="primary"
+              no-caps
+              class="full-width"
               type="submit"
               label="Change Password"
             />
@@ -130,7 +190,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="dialog.editProfile" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.editProfile" maximized>
       <q-card>
         <q-toolbar>
           <q-btn flat round dense icon="west" @click="dialog.editProfile = !dialog.editProfile"/>
@@ -150,7 +210,11 @@
                 dense
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Please type in fullname']"
-              />
+              >
+                <template v-slot:prepend>
+                  <q-icon color="primary" name="account_circle" />
+                </template>
+              </q-input>
             </div>
             <div>
               <label for="phone" class="text-subtitle1">Phone Number</label>
@@ -163,17 +227,24 @@
                 dense
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Please type in phone number']"
-              />
+              >
+                <template v-slot:prepend>
+                  <q-icon color="primary" name="phone" />
+                </template>
+              </q-input>
             </div>
             <div>
               <label for="profile" class="text-subtitle1">Profile Pic</label>
               <q-file accept=".jpg, image/*" capture @input="uploadProfilePic" lazy-rules dense id="profile" outlined v-model="user.profile">
                 <template v-slot:prepend>
-                  <q-icon name="attach_file" />
+                  <q-icon color="primary" name="attach_file" />
                 </template>
               </q-file>
             </div>
             <q-btn
+              no-caps
+              color="primary"
+              class="q-mt-lg q-pa-xs full-width"
               type="submit"
               label="Update Profile"
             />
@@ -181,7 +252,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="dialog.feedback" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.feedback" maximized>
       <q-card>
         <q-toolbar>
           <q-btn round flat dense icon="west" @click="dialog.feedback = !dialog.feedback"/>
@@ -203,6 +274,9 @@
               <q-radio v-model="report.status" val="suggestions" label="Suggestions" />
             </div>
             <q-btn
+              class="full-width q-mt-lg"
+              no-caps
+              color="primary"
               label="Send"
               type="submit"
             />

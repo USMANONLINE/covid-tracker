@@ -19,7 +19,7 @@
 
     <!-- (Optional) The Footer -->
     <q-footer>
-      <q-tabs dense switch-indicator>
+      <q-tabs dense  class="bg-white text-primary q-pa-xs">
         <q-route-tab
           :to="{ name: 'App Dashboard', query: { account: user._id } }"
           no-caps
