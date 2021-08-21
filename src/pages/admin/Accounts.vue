@@ -21,7 +21,7 @@
           <q-td key="status" :props="props">
             <q-chip :class="props.row.meta.enabled ? 'bg-positive text-white' : 'bg-negative text-white'">{{ props.row.meta.enabled ? 'Active' : 'Disabled' }}</q-chip>
           </q-td>
-          <q-td key="reports" :props="props">0</q-td>
+          <q-td key="reports" :props="props">{{ props.row.reports }}</q-td>
           <q-td key="date" :props="props">{{ new Date(props.row.meta.date).toLocaleString() }}</q-td>
           <q-td key="actions" :props="props">
             <q-btn flat round dense icon="sync" size="sm" @click="dialog.deactivate = !dialog.deactivate, $store.commit('initRecord', Object.assign({}, props.row))" />

@@ -270,25 +270,41 @@
               :options="['Early signs', 'Feverish', 'Critical']"
               :rules="[ val => val && val.length > 0 || 'Please select condition']"
             />
+<!--            <q-select-->
+<!--              v-model="report.likely_disease"-->
+<!--              @filter="loadDiseases"-->
+<!--              :options="diseases"-->
+<!--              dense-->
+<!--              outlined-->
+<!--              lazy-rules-->
+<!--              label="Likely Disease"-->
+<!--              :rules="[ val => val && val.length > 0 || 'Please select likely disease']"-->
+<!--            />-->
             <q-select
-              v-model="report.likely_disease"
-              @filter="loadDiseases"
-              :options="diseases"
-              dense
-              outlined
-              lazy-rules
-              label="Likely Disease"
-              :rules="[ val => val && val.length > 0 || 'Please select likely disease']"
-            />
-            <q-select
-              v-model="report.symptom"
-              @filter="loadSymptoms"
+              multiple
+              v-model="report.symptoms"
               :options="symptoms"
               dense
               outlined
+              use-chips
               lazy-rules
               label="Symptoms"
-              :rules="[ val => val && val.length > 0 || 'Please select symptoms']"
+              :rules="[ val => val && val.length > 3 || 'Please select symptoms']"
+              hint="Please select atleast 4 options"
+            />
+            <q-select
+              multiple
+              v-model="report.other_symptom"
+              :options="other_symptoms"
+              dense
+              outlined
+              lazy-rules
+              label="Other Symptoms"
+              :rules="[ val => val && val.length > 0 || 'Please select others symptoms']"
+              input-debounce="0"
+              use-input
+              use-chips
+              new-value-mode="add-unique"
             />
             <q-file
               @input="uploadPatientPic"
@@ -576,7 +592,7 @@
 
 <script>
 import {database, url} from "boot/config";
-import {decode} from "js-base64";
+import {decode, encode} from "js-base64";
 import states from '../../states'
 
 export default {
@@ -618,7 +634,12 @@ export default {
     },
     reports: [],
     diseases: [],
-    symptoms: []
+    symptoms: [
+      'Sore Throat', 'Dry Cough', 'Difficulty in Breathing / Shortness of Breath', 'Chest Pain / Pressure', 'Loss of Taste / Smell',
+      'Muscle Pain', 'Chest Pain', 'Abdominal Pain', 'Facial Swelling', 'Bleeding From the Mouth or Nose',
+      'A Persistent Cough that last more than 3 weeks', 'Weight loss', 'Night Sweats', 'High Temperature', 'Swellings in the Neck'
+    ],
+    other_symptoms: ['Tiredness', 'Fever', 'General Weakness', 'Malaise', 'Respiratory Distress', 'Headache', 'Diarrhoea', 'Conjunctivitis', 'Loss of Appetite']
   }),
 
   computed: {
@@ -643,12 +664,57 @@ export default {
   },
 
   methods: {
+    getDiseaseCounts (symptoms) {
+      let diseaseCounts = { covid: 0, lassa: 0, tuberclusis: 0 }
+      const diseaseMapping = {
+        covid: ['Sore Throat', 'Dry Cough', 'Difficulty in Breathing / Shortness of Breath', 'Chest Pain / Pressure', 'Loss of Taste / Smell'],
+        lassa: ['Muscle Pain', 'Chest Pain', 'Abdominal Pain', 'Facial Swelling', 'Bleeding From the Mouth or Nose'],
+        tuberclusis: ['A Persistent Cough that last more than 3 weeks', 'Weight loss', 'Night Sweats', 'High Temperature', 'Swellings in the Neck']
+      }
+      symptoms.forEach(symptom => {
+        const covid = diseaseMapping.covid.find(disease => disease === symptom)
+        const lassa = diseaseMapping.lassa.find(disease => disease === symptom)
+        const tuberclusis = diseaseMapping.tuberclusis.find(disease => disease === symptom)
+        if (covid !== undefined) {
+          diseaseCounts.covid += 1
+        } else if (lassa !== undefined) {
+          diseaseCounts.lassa += 1
+        } else if (tuberclusis !== undefined) {
+          diseaseCounts.tuberclusis += 1
+        }
+      })
+      return diseaseCounts
+    },
+
+    getDisease (metric) {
+      let count = 0
+      let patientDisease = ''
+      Object.keys(metric).forEach(disease => {
+        if (metric[disease] > 0) {
+          count = metric[disease]
+          if (count >= 3) {
+            patientDisease = disease
+          }
+        }
+      })
+      return patientDisease
+    },
+
     sendReport () {
+      const metric = this.getDiseaseCounts(this.report.symptoms)
+      const patientDisease = this.getDisease(metric)
       const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
       this.report.meta.sentBy = this.$route.query.account
-      database.put(this.report).then(response => {
-        this.report._rev = response.rev
-        this.$store.commit('addToRecords', response)
+      this.report.possible_disease = patientDisease
+      user.reports += 1
+
+      database.bulkDocs([this.report, user]).then(response => {
+        const reportRef = response.find(rep => rep.id === this.report._id)
+        const userRef = response.find(use => use.id === user._id)
+        this.report._rev = reportRef.rev
+        user._rev = userRef.rev
+        this.$store.commit('addToRecords', this.report)
+        this.$q.localStorage.set('sessionid', encode(JSON.stringify(user)))
         this.$q.notify({
           type: 'positive',
           message: 'Report sent successfully !'
@@ -763,20 +829,45 @@ export default {
     },
 
     deleteCase () {
-      database.remove(this.$store.state.record).then(response => {
-        this.$store.commit('removeFromRecords', response.id)
-        this.$q.notify({
-          type: 'positive',
-          message: 'Case deleted successfully'
+      const user = JSON.parse(decode(this.$q.localStorage.getItem('sessionid')))
+      if (user.meta.stores === '_user') {
+        user.reports -= 1
+        const report = Object.assign({}, this.$store.state.record)
+        report._deleted = true
+        database.bulkDocs([user, report]).then(response => {
+          const reportRef = response.find(rep => rep.id === report._id)
+          const userRef = response.find(use => use.id === user._id)
+          user._rev = userRef.rev
+          this.$q.localStorage.set('sessionid', encode(JSON.stringify(user)))
+          this.$store.commit('removeFromRecords', reportRef.id)
+          this.$q.notify({
+            type: 'positive',
+            message: 'Case deleted successfully'
+          })
+          this.dialog.deleteCase = !this.dialog.deleteCase
+        }).catch(error => {
+          this.$q.notify({
+            type: 'negative',
+            message: 'Unable to delete case. Please check your network and try again !'
+          })
+          return error
         })
-        this.dialog.deleteCase = !this.dialog.deleteCase
-      }).catch(error => {
-        this.$q.notify({
-          type: 'negative',
-          message: 'Unable to delete case. Please check your network and try again !'
+      } else {
+        database.remove(this.$store.state.record).then(response => {
+          this.$store.commit('removeFromRecords', response.id)
+          this.$q.notify({
+            type: 'positive',
+            message: 'Case deleted successfully'
+          })
+          this.dialog.deleteCase = !this.dialog.deleteCase
+        }).catch(error => {
+          this.$q.notify({
+            type: 'negative',
+            message: 'Unable to delete case. Please check your network and try again !'
+          })
+          return error
         })
-        return error
-      })
+      }
     },
 
     loadCaseReport (id) {

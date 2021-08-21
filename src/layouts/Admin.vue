@@ -60,12 +60,12 @@
             <q-item-section>Accounts</q-item-section>
           </q-item>
 
-          <q-item :to="{ name: 'Disease & Symptom Options' }" clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="group" />
-            </q-item-section>
-            <q-item-section>User Options</q-item-section>
-          </q-item>
+<!--          <q-item :to="{ name: 'Disease & Symptom Options' }" clickable v-ripple>-->
+<!--            <q-item-section avatar>-->
+<!--              <q-icon name="group" />-->
+<!--            </q-item-section>-->
+<!--            <q-item-section>User Options</q-item-section>-->
+<!--          </q-item>-->
 
           <q-item :to="{ name: 'Admin Cases' }" clickable v-ripple>
             <q-item-section avatar>
