@@ -24,7 +24,7 @@
             <q-btn no-caps @click="dialog.newCase = !dialog.newCase" outline color="white" label="Report case" />
           </template>
         </q-banner>
-        <q-card class="q-mb-xs" v-for="(covidReport, covidReportId) in myReports" :key="covidReportId">
+        <q-card class="q-mb-xs q-mt-sm rounded-borders" v-for="(covidReport, covidReportId) in myReports" :key="covidReportId">
           <q-card-section horizontal>
             <div>
               <img
@@ -36,7 +36,7 @@
             <q-list style="width: 100%" separator bordered>
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
+                  <q-avatar text-color="primary">
                     <q-icon name="person"/>
                   </q-avatar>
                 </q-item-section>
@@ -49,8 +49,8 @@
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
-                    <q-icon name="person"/>
+                  <q-avatar  text-color="primary">
+                    <q-icon name="sentiment_dissatisfied"/>
                   </q-avatar>
                 </q-item-section>
 
@@ -62,8 +62,8 @@
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
-                    <q-icon name="person"/>
+                  <q-avatar  text-color="primary">
+                    <q-icon name="sentiment_dissatisfied"/>
                   </q-avatar>
                 </q-item-section>
 
@@ -75,11 +75,11 @@
             </q-list>
           </q-card-section>
           <q-separator />
-          <q-card-actions align="right">
-            <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
-            <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
-            <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
-            <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
+          <q-card-actions align="around">
+            <q-btn  color="grey"  flat icon="add"   outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
+            <q-btn  color="grey"  flat icon="info" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
+            <q-btn   color="grey" flat icon="description" @click="loadCaseReport(covidReport._id)"/>
+            <q-btn  flat color="negative" icon="delete" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
           </q-card-actions>
         </q-card>
       </q-tab-panel>
@@ -116,7 +116,7 @@
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
+                  <q-avatar  text-color="primary">
                     <q-icon name="person"/>
                   </q-avatar>
                 </q-item-section>
@@ -129,8 +129,8 @@
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
-                    <q-icon name="person"/>
+                  <q-avatar  text-color="primary">
+                    <q-icon name="sentiment_dissatisfied"/>
                   </q-avatar>
                 </q-item-section>
 
@@ -218,9 +218,9 @@
             />
           </div>
           <q-list style="width: 100%" separator bordered>
-            <q-item clickable v-ripple>
+            <q-item >
               <q-item-section avatar>
-                <q-avatar color="primary" text-color="white">
+                <q-avatar  text-color="primary">
                   <q-icon name="person"/>
                 </q-avatar>
               </q-item-section>
@@ -231,10 +231,10 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item >
               <q-item-section avatar>
-                <q-avatar color="primary" text-color="white">
-                  <q-icon name="person"/>
+                <q-avatar  text-color="primary">
+                  <q-icon name="sentiment_dissatisfied"/>
                 </q-avatar>
               </q-item-section>
 
@@ -244,10 +244,10 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item >
               <q-item-section avatar>
-                <q-avatar color="primary" text-color="white">
-                  <q-icon name="person"/>
+                <q-avatar  text-color="primary">
+                  <q-icon name="sentiment_dissatisfied"/>
                 </q-avatar>
               </q-item-section>
 
@@ -259,16 +259,24 @@
           </q-list>
         </q-card-section>
         <q-separator />
-        <q-card-actions align="right">
-          <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
-          <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
-          <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
-          <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
+        <q-card-actions align="right" class="text-grey">
+          <q-btn fab-mini flat stack icon="add"   @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" >
+            <q-tooltip>Add report</q-tooltip>
+          </q-btn>
+          <q-btn flat fab-mini icon="info"   @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline >
+            <q-tooltip>Detailed report</q-tooltip>
+          </q-btn>
+          <q-btn flat fab-mini icon="description"   @click="loadCaseReport(covidReport._id)">
+            <q-tooltip>View reports</q-tooltip>
+          </q-btn>
+          <q-btn  flat fab-mini icon="delete"   color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase">
+            <q-tooltip>Delete report</q-tooltip>
+          </q-btn>
         </q-card-actions>
       </q-card>
     </template>
 
-    <q-dialog v-model="dialog.newCase" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.newCase" maximized>
       <q-card >
         <q-toolbar>
           <q-btn @click="dialog.newCase = !dialog.newCase" flat round dense icon="west"/>
@@ -286,7 +294,11 @@
               outlined
               dense
               :rules="[ val => val && val.length > 0 || 'Please type in name']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="person" />
+              </template>
+            </q-input>
             <q-input
               v-model.trim="report.phone"
               label="Patients Phone"
@@ -297,7 +309,11 @@
               dense
               hint="Patient or Relative phone number"
               :rules="[ val => val && val.length > 0 || 'Please type in phone']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="phone" />
+              </template>
+            </q-input>
             <q-select
               v-model="report.gender"
               label="Patients Gender"
@@ -306,7 +322,11 @@
               dense
               :options="['Male', 'Female']"
               :rules="[ val => val && val.length > 0 || 'Please select gender']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="wc" />
+              </template>
+            </q-select>
             <q-select
               v-model="report.relationship"
               label="Relationship with patient"
@@ -315,7 +335,11 @@
               dense
               :options="['Father', 'Mother', 'Child', 'Brother', 'Sister', 'Uncle', 'Nephew', 'Niece', 'Wife', 'Husband', 'Neighbor', 'None']"
               :rules="[ val => val && val.length > 0 || 'Please select relationship status']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="wc" />
+              </template>
+            </q-select>
             <q-select
               v-model="report.condition"
               label="Disease Level"
@@ -337,7 +361,7 @@
 <!--            />-->
             >
               <template v-slot:prepend>
-                <q-icon name="sort" />
+                <q-icon name="sentiment_dissatisfied" />
               </template>
             </q-select>
             <q-select
@@ -397,7 +421,11 @@
               outlined
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please select state']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="map" />
+              </template>
+            </q-select>
             <q-select
               v-if="report.state !== undefined"
               :options="states[report.state]"
@@ -407,7 +435,11 @@
               outlined
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please select lga']"
-            />
+            >
+              <template v-slot:prepend>
+                <q-icon name="location_on" />
+              </template>
+            </q-select>
             <q-input
               v-model="report.info"
               type="textarea"
@@ -440,7 +472,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialog.caseDetail" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.caseDetail" maximized>
       <q-card>
         <q-toolbar>
           <q-btn @click="dialog.caseDetail = !dialog.caseDetail" flat round dense icon="west"/>
@@ -450,7 +482,7 @@
         <q-list separator bordered>
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
+              <q-avatar  text-color="primary">
                 <q-icon name="person"/>
               </q-avatar>
             </q-item-section>
@@ -463,8 +495,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="phone"/>
               </q-avatar>
             </q-item-section>
 
@@ -476,8 +508,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="wc"/>
               </q-avatar>
             </q-item-section>
 
@@ -489,8 +521,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="wc"/>
               </q-avatar>
             </q-item-section>
 
@@ -502,11 +534,10 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="sentiment_dissatisfied"/>
               </q-avatar>
             </q-item-section>
-
             <q-item-section>
               <q-item-label>{{ $store.state.record.condition }}</q-item-label>
               <q-item-label caption lines="2">Condition</q-item-label>
@@ -515,8 +546,8 @@
 
           <q-item clickable v-ripple v-if="$store.state.record.possible_disease !== ''">
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="bug_report"/>
               </q-avatar>
             </q-item-section>
 
@@ -528,8 +559,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="sentiment_dissatisfied"/>
               </q-avatar>
             </q-item-section>
 
@@ -543,8 +574,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="sentiment_dissatisfied"/>
               </q-avatar>
             </q-item-section>
 
@@ -558,8 +589,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="map"/>
               </q-avatar>
             </q-item-section>
 
@@ -571,8 +602,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="home"/>
               </q-avatar>
             </q-item-section>
 
@@ -584,8 +615,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="description"/>
               </q-avatar>
             </q-item-section>
 
@@ -597,8 +628,8 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person"/>
+              <q-avatar  text-color="primary">
+                <q-icon name="location_on"/>
               </q-avatar>
             </q-item-section>
 
@@ -611,7 +642,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialog.patientReport" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.patientReport" maximized>
       <q-card>
         <q-toolbar>
           <q-btn @click="dialog.patientReport = !dialog.patientReport" flat round dense icon="west"/>
@@ -629,6 +660,9 @@
               :rules="[ val => val && val.length > 0 || 'Please type in patients current condition']"
             />
             <q-btn
+              color="primary"
+              no-caps
+              class="full-width"
               type="submit"
               label="Save"
             />
@@ -637,7 +671,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialog.deleteCase">
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.deleteCase">
       <q-card style="width: 450px">
         <q-toolbar>
           <q-toolbar-title>Delete Case</q-toolbar-title>
@@ -654,7 +688,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialog.caseReports" maximized>
+    <q-dialog transition-show="slide-up" transition-hide="slide-down" v-model="dialog.caseReports" maximized>
       <q-card>
         <q-toolbar>
           <q-btn @click="dialog.caseReports = !dialog.caseReports" flat round dense icon="west"/>
@@ -671,7 +705,7 @@
               <div>
                 {{ pr.description }}
                 <div>
-                  <q-btn label="Delete" outline size="sm" icon="delete" color="negative" @click="deletePatientReport(pr)"/>
+                  <q-btn primary label="Delete" outline size="sm" icon="delete" color="negative" @click="deletePatientReport(pr)"/>
                 </div>
               </div>
             </q-timeline-entry>
