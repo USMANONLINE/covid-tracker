@@ -142,7 +142,8 @@ export default {
     store.dispatch('queryRecords', {
       selector: {
         'meta.stores': '_admin'
-      }
+      },
+      limit: 1000
     })
   },
 

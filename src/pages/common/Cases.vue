@@ -678,7 +678,8 @@ export default {
     store.dispatch('queryRecords', {
       selector: {
         'meta.stores': '_casereport'
-      }
+      },
+      limit: 1000
     })
   },
 
@@ -743,20 +744,20 @@ export default {
 
   methods: {
     getDiseaseCounts (symptoms) {
-      let diseaseCounts = { covid: 0, lassa: 0, tuberclusis: 0 }
+      let diseaseCounts = { 'Flu': 0, 'Sars': 0, tuberclusis: 0 }
       const diseaseMapping = {
-        covid: ['Sore Throat', 'Dry Cough', 'Difficulty in Breathing / Shortness of Breath', 'Chest Pain / Pressure', 'Loss of Taste / Smell'],
-        lassa: ['Muscle Pain', 'Chest Pain', 'Abdominal Pain', 'Facial Swelling', 'Bleeding From the Mouth or Nose'],
+        'Flu': ['Sore Throat', 'Dry Cough', 'Difficulty in Breathing / Shortness of Breath', 'Chest Pain / Pressure', 'Loss of Taste / Smell'],
+        'Sars': ['Muscle Pain', 'Chest Pain', 'Abdominal Pain', 'Facial Swelling', 'Bleeding From the Mouth or Nose'],
         tuberclusis: ['A Persistent Cough that last more than 3 weeks', 'Weight loss', 'Night Sweats', 'High Temperature', 'Swellings in the Neck']
       }
       symptoms.forEach(symptom => {
-        const covid = diseaseMapping.covid.find(disease => disease === symptom)
-        const lassa = diseaseMapping.lassa.find(disease => disease === symptom)
+        const covid = diseaseMapping['Flu'].find(disease => disease === symptom)
+        const lassa = diseaseMapping['Sars'].find(disease => disease === symptom)
         const tuberclusis = diseaseMapping.tuberclusis.find(disease => disease === symptom)
         if (covid !== undefined) {
-          diseaseCounts.covid += 1
+          diseaseCounts['Flu'] += 1
         } else if (lassa !== undefined) {
-          diseaseCounts.lassa += 1
+          diseaseCounts['Sars'] += 1
         } else if (tuberclusis !== undefined) {
           diseaseCounts.tuberclusis += 1
         }
