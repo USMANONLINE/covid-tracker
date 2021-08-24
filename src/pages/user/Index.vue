@@ -16,7 +16,7 @@
             >
               {{ diseaseMetric.covid }}%
             </q-knob>
-            <div class="q-pb-sm">Covid 19</div>
+            <div class="q-pb-sm">Flu</div>
           </div>
         </q-card>
       </div>
@@ -36,7 +36,7 @@
             >
               {{ diseaseMetric.lassa }}%
             </q-knob>
-            <div class="q-pb-sm">Lassa Fever</div>
+            <div class="q-pb-sm">SARS</div>
           </div>
         </q-card>
       </div>
@@ -124,7 +124,8 @@ export default {
     store.dispatch('queryRecords', {
       selector: {
         'meta.stores': '_casereport'
-      }
+      },
+      limit: 1000
     })
     // store.dispatch('queryRecords', {
     //   selector: {

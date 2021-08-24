@@ -64,7 +64,8 @@ export default {
           { 'meta.stores': '_issues' },
           { 'meta.stores': '_suggestions' }
         ]
-      }
+      },
+      limit: 1000
     })
   },
 
