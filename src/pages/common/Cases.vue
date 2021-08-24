@@ -11,7 +11,7 @@
       narrow-indicator
     >
       <q-tab name="mails" label="My Reports" />
-      <q-tab name="alarms" label="Public Reports" />
+<!--      <q-tab name="alarms" label="Public Reports" />-->
     </q-tabs>
 
     <q-separator v-if="$route.name === 'App Cases'" />
@@ -152,58 +152,6 @@
       </q-tab-panel>
 
       <q-tab-panel name="alarms">
-       <q-list padding>
-           <q-item bordered class="shadow-2 rounded-borders">
-             <q-item-section top thumbnail class="q-ml-none">
-               <img src="https://cdn.quasar.dev/img/mountains.jpg">
-             </q-item-section>
-
-             <q-item-section>
-               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
-               <q-item-label caption>
-               <span class="float-left" >
-                 <div>
-                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
-                 </div>
-               </span>
-                 <span class="float-right" >
-                     <div>
-                <q-btn no-caps  dense flat label="Status" icon="error" />
-                 </div>
-               </span>
-               </q-item-label>
-             </q-item-section>
-
-             <q-item-section side>
-               <q-icon name="chevron_right" color="grey" />
-             </q-item-section>
-           </q-item>
-           <q-item bordered class="shadow-2 rounded-borders">
-             <q-item-section top thumbnail class="q-ml-none">
-               <img src="https://cdn.quasar.dev/img/mountains.jpg">
-             </q-item-section>
-
-             <q-item-section>
-               <q-item-label><span><q-icon name="home" /></span>Plot 3 Mandawari Sabon Titi Kuluwa Shopping Mall.</q-item-label>
-               <q-item-label caption>
-               <span class="float-left" >
-                 <div>
-                 <q-btn  dense flat label="COVID-19" icon="bug_report" />
-                 </div>
-               </span>
-                 <span class="float-right" >
-                     <div>
-                <q-btn no-caps  dense flat label="Status" icon="error" />
-                 </div>
-               </span>
-               </q-item-label>
-             </q-item-section>
-
-             <q-item-section side>
-               <q-icon name="chevron_right" color="grey" />
-             </q-item-section>
-           </q-item>
-       </q-list>
       </q-tab-panel>
     </q-tab-panels>
 
