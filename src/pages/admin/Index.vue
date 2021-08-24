@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
-        <q-card>
+        <q-card class="rounded-borders">
           <div class="text-center">
             <q-knob
               :value="diseaseMetric.covid"
@@ -22,7 +22,7 @@
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
-        <q-card>
+        <q-card  class="rounded-borders">
           <div class="text-center">
             <q-knob
               :value="diseaseMetric.lassa"
@@ -41,7 +41,7 @@
         </q-card>
       </div>
 
-      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
+      <q-card class="col-xs-12 col-sm-12 col-md-3 q-pa-xs rounded-borders">
         <q-card>
           <div class="text-center">
             <q-knob
@@ -59,7 +59,7 @@
             <div class="q-pb-sm">Tuberclusis</div>
           </div>
         </q-card>
-      </div>
+      </q-card>
 
       <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
         <q-card>

@@ -31,7 +31,6 @@
           no-caps
           icon="assignment"
           :to="{ name: 'App Cases', query: { account: user._id } }"
-          active-class="bg-grey"
           replace
           label="Reports"
         />

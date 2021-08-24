@@ -18,14 +18,14 @@
     </q-header>
 
     <!-- (Optional) The Footer -->
-    <q-footer>
+<!--    <q-footer>-->
 
-      <q-toolbar>
-        <q-toolbar-title class="text-subtitle1 text-center">
-          &copy; Covid Report {{ new Date().getFullYear() }}
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
+<!--      <q-toolbar>-->
+<!--        <q-toolbar-title class="text-subtitle1 text-center">-->
+<!--          &copy; Covid Report {{ new Date().getFullYear() }}-->
+<!--        </q-toolbar-title>-->
+<!--      </q-toolbar>-->
+<!--    </q-footer>-->
 
     <!-- (Optional) A Drawer; you can add one more with side="right" or change this one's side -->
     <q-drawer
@@ -41,14 +41,14 @@
         <q-list bordered separator>
           <q-item :to="{ name: 'Admin Dashboard' }" clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="group" />
+              <q-icon name="poll" />
             </q-item-section>
             <q-item-section>Dashboard</q-item-section>
           </q-item>
 
           <q-item :to="{ name: 'Admin Feedback' }" clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="group" />
+              <q-icon name="feedback" />
             </q-item-section>
             <q-item-section>Feedback</q-item-section>
           </q-item>
@@ -69,14 +69,14 @@
 
           <q-item :to="{ name: 'Admin Cases' }" clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="group" />
+              <q-icon name="bug_report" />
             </q-item-section>
             <q-item-section>Cases</q-item-section>
           </q-item>
 
           <q-item :to="{ name: 'Administrators' }" clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="group" />
+              <q-icon name="people" />
             </q-item-section>
             <q-item-section>Administrators</q-item-section>
           </q-item>
