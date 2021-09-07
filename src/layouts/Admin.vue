@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr fFf"> <!-- Be sure to play with the Layout demo on docs -->
 
     <!-- (Optional) The Header -->
-    <q-header elevated>
+    <q-header >
       <q-toolbar>
         <q-btn
           flat
@@ -31,8 +31,7 @@
     <q-drawer
       v-model="leftDrawer"
       side="left"
-      bordered
-      content-class="bg-grey-2"
+      content-class="bg-white"
       :width="200"
       :breakpoint="500"
     >

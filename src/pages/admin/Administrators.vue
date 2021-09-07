@@ -41,7 +41,7 @@
               <q-input
                 v-model.trim="user.phone"
                 id="phone"
-                type="tel"
+                type="number"
                 name="phone"
                 outlined
                 dense

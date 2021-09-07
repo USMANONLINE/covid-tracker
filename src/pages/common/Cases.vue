@@ -11,7 +11,7 @@
       narrow-indicator
     >
       <q-tab name="mails" label="My Reports" />
-<!--      <q-tab name="alarms" label="Public Reports" />-->
+      <q-tab name="alarms" label="Public Reports" />
     </q-tabs>
 
     <q-separator v-if="$route.name === 'App Cases'" />
@@ -37,47 +37,47 @@
               <q-item clickable v-ripple>
                 <q-item-section avatar>
                   <q-avatar text-color="primary">
-                    <q-icon name="person"/>
+                    <q-icon name="home"/>
                   </q-avatar>
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.name }}</q-item-label>
-                  <q-item-label caption lines="1">Full Name</q-item-label>
+                  <q-item-label>{{ covidReport.state }}</q-item-label>
+                  <q-item-label caption lines="1">State</q-item-label>
                 </q-item-section>
               </q-item>
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
                   <q-avatar  text-color="primary">
-                    <q-icon name="sentiment_dissatisfied"/>
+                    <q-icon name="home"/>
                   </q-avatar>
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.condition }}</q-item-label>
-                  <q-item-label caption lines="1">Condition</q-item-label>
+                  <q-item-label>{{ covidReport.lga }}</q-item-label>
+                  <q-item-label caption lines="1">LGA</q-item-label>
                 </q-item-section>
               </q-item>
 
-              <q-item clickable v-ripple>
-                <q-item-section avatar>
-                  <q-avatar  text-color="primary">
-                    <q-icon name="sentiment_dissatisfied"/>
-                  </q-avatar>
-                </q-item-section>
+<!--              <q-item clickable v-ripple>-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-avatar  text-color="primary">-->
+<!--                    <q-icon name="location_on"/>-->
+<!--                  </q-avatar>-->
+<!--                </q-item-section>-->
 
-                <q-item-section>
-                  <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>
-                  <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>
-                </q-item-section>
-              </q-item>
+<!--                <q-item-section>-->
+<!--                  <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>-->
+<!--                  <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>-->
+<!--                </q-item-section>-->
+<!--              </q-item>-->
             </q-list>
           </q-card-section>
           <q-separator />
           <q-card-actions align="around">
             <q-btn  color="grey"  flat icon="add"   outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
-            <q-btn  color="grey"  flat icon="info" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
+            <q-btn v-if="$route.name === 'Admin Cases'"  color="grey"  flat icon="info" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
             <q-btn   color="grey" flat icon="description" @click="loadCaseReport(covidReport._id)"/>
             <q-btn  flat color="negative" icon="delete" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
           </q-card-actions>
@@ -103,55 +103,39 @@
             <q-list style="width: 100%" separator bordered>
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">
-                    <q-icon name="person"/>
+                  <q-avatar text-color="primary">
+                    <q-icon name="home"/>
                   </q-avatar>
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.name }}</q-item-label>
-                  <q-item-label caption lines="1">Full Name</q-item-label>
+                  <q-item-label>{{ covidReport.state }}</q-item-label>
+                  <q-item-label caption lines="1">State</q-item-label>
                 </q-item-section>
               </q-item>
 
               <q-item clickable v-ripple>
                 <q-item-section avatar>
                   <q-avatar  text-color="primary">
-                    <q-icon name="person"/>
+                    <q-icon name="home"/>
                   </q-avatar>
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ covidReport.condition }}</q-item-label>
-                  <q-item-label caption lines="1">Condition</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-ripple>
-                <q-item-section avatar>
-                  <q-avatar  text-color="primary">
-                    <q-icon name="sentiment_dissatisfied"/>
-                  </q-avatar>
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label>{{ covidReport.possible_disease !== '' ? String(covidReport.possible_disease).toUpperCase() : covidReport.address }}</q-item-label>
-                  <q-item-label caption lines="2">{{ covidReport.possible_disease !== '' ? 'Possible Disease' : 'Address' }}</q-item-label>
+                  <q-item-label>{{ covidReport.lga }}</q-item-label>
+                  <q-item-label caption lines="1">LGA</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-card-section>
           <q-separator />
-          <q-card-actions align="right">
-            <q-btn label="Add Report" outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
-            <q-btn label="View Detail" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
-            <q-btn label="View Reports" outline @click="loadCaseReport(covidReport._id)"/>
-<!--            <q-btn label="Delete" outline color="negative" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>-->
+          <q-card-actions align="around">
+            <q-btn  color="grey"  flat icon="add"   outline @click="feedback.caseid = covidReport._id, dialog.patientReport = !dialog.patientReport" />
+            <q-btn v-if="$route.name === 'Admin Cases'"  color="grey"  flat icon="info" @click="$store.commit('initRecord', covidReport), dialog.caseDetail = !dialog.caseDetail" outline />
+            <q-btn   color="grey" flat icon="description" @click="loadCaseReport(covidReport._id)"/>
+            <q-btn  flat color="negative" icon="delete" @click="$store.commit('initRecord', covidReport), dialog.deleteCase = !dialog.deleteCase"/>
           </q-card-actions>
         </q-card>
-      </q-tab-panel>
-
-      <q-tab-panel name="alarms">
       </q-tab-panel>
     </q-tab-panels>
 
@@ -250,7 +234,7 @@
             <q-input
               v-model.trim="report.phone"
               label="Patients Phone"
-              type="tel"
+              type="number"
               name="p-phone"
               lazy-rules
               outlined

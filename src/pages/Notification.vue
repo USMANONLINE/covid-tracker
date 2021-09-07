@@ -27,6 +27,7 @@
 <!--    </q-card>-->
 
     <q-list separator v-if="$store.state.records.docs.length > 0" bordered class="rounded-borders">
+
       <q-item-label header>Notifications ({{ $store.state.records.docs.length }})</q-item-label>
 
       <template v-for="(report, reportIndex) in $store.state.records.docs">
@@ -34,31 +35,28 @@
           <q-item-section avatar top>
             <q-img :src="getUrl(report)" size="34px" />
           </q-item-section>
+          <p>{{report.condition}}</p>
 
           <q-item-section top class="col-2 gt-sm">
-            <q-item-label class="q-mt-sm">{{ report.name }}</q-item-label>
+<!--            <q-item-label class="q-mt-sm">{{report.condition}}</q-item-label>-->
           </q-item-section>
 
           <q-item-section top>
             <q-item-label lines="1">
-              <span class="text-weight-medium">Address</span>
-              <span class="text-grey-8"> - {{ report.address }}</span>
+<!--              <span class="text-weight-medium">Address</span>-->
+              <span class="text-grey-8"> - {{ report.state }}</span>
             </q-item-label>
             <q-item-label caption lines="1">
-              {{ new Date(report.meta.date).toLocaleDateString() }}
+              {{ report.lga }}
             </q-item-label>
             <q-item-label lines="1" class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
-              <span>{{ report.condition }}</span>
+              <span>{{ report.disease }}</span>
             </q-item-label>
           </q-item-section>
 
-<!--          <q-item-section top side>-->
-<!--            <div class="text-grey-8 q-gutter-xs">-->
-<!--              <q-btn class="gt-xs" size="12px" flat dense round icon="delete" />-->
-<!--              <q-btn class="gt-xs" size="12px" flat dense round icon="done" />-->
-<!--              <q-btn size="12px" flat dense round icon="more_vert" />-->
-<!--            </div>-->
-<!--          </q-item-section>-->
+          <q-item-section top side>
+            <span>{{ new Date(report.meta.date).toLocaleDateString() }}</span>
+          </q-item-section>
         </q-item>
       </template>
     </q-list>

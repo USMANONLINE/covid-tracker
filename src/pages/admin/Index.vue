@@ -1,8 +1,11 @@
 <template>
   <q-page padding>
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
-        <q-card class="rounded-borders">
+<!--      v-for="(report, reportIndex) in $store.state.records.docs"-->
+<!--      <p v-for="(report, reportIndex) in reportByPossibleDisease" :key="reportIndex">{{report[0]}}</p>-->
+
+      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs" v-for="(report, reportIndex) in reportByPossibleDisease" :key="reportIndex">
+        <q-card flat bordered class="rounded-borders">
           <div class="text-center">
             <q-knob
               :value="diseaseMetric.covid"
@@ -14,84 +17,86 @@
               track-color="grey-3"
               class="q-ma-md"
             >
-              {{ diseaseMetric.covid }}%
+              {{ report[1] }}%
             </q-knob>
-            <div class="q-pb-sm">Flu</div>
+            <div class="q-pb-sm" v-if="report[0] !==''">{{ report[0] }}</div>
+            <div class="q-pb-sm text-capitalize" v-else>Tuberclusis</div>
+
           </div>
         </q-card>
       </div>
 
-      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
-        <q-card  class="rounded-borders">
-          <div class="text-center">
-            <q-knob
-              :value="diseaseMetric.lassa"
-              show-value
-              font-size="12px"
-              size="70px"
-              :thickness="0.22"
-              color="warning"
-              track-color="grey-3"
-              class="q-ma-md"
-            >
-              {{ diseaseMetric.lassa }}%
-            </q-knob>
-            <div class="q-pb-sm">SARS</div>
-          </div>
-        </q-card>
-      </div>
+<!--      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">-->
+<!--        <q-card  class="rounded-borders">-->
+<!--          <div class="text-center">-->
+<!--            <q-knob-->
+<!--              :value="diseaseMetric.lassa"-->
+<!--              show-value-->
+<!--              font-size="12px"-->
+<!--              size="70px"-->
+<!--              :thickness="0.22"-->
+<!--              color="warning"-->
+<!--              track-color="grey-3"-->
+<!--              class="q-ma-md"-->
+<!--            >-->
+<!--              {{ diseaseMetric.lassa }}%-->
+<!--            </q-knob>-->
+<!--            <div class="q-pb-sm">SARS</div>-->
+<!--          </div>-->
+<!--        </q-card>-->
+<!--      </div>-->
 
-      <q-card class="col-xs-12 col-sm-12 col-md-3 q-pa-xs rounded-borders">
-        <q-card>
-          <div class="text-center">
-            <q-knob
-              :value="diseaseMetric.tuberclusis"
-              show-value
-              font-size="12px"
-              size="70px"
-              :thickness="0.22"
-              color="teal"
-              track-color="grey-3"
-              class="q-ma-md"
-            >
-              {{ diseaseMetric.tuberclusis }}%
-            </q-knob>
-            <div class="q-pb-sm">Tuberclusis</div>
-          </div>
-        </q-card>
-      </q-card>
+<!--      <q-card class="col-xs-12 col-sm-12 col-md-3 q-pa-xs rounded-borders">-->
+<!--        <q-card>-->
+<!--          <div class="text-center">-->
+<!--            <q-knob-->
+<!--              :value="diseaseMetric.tuberclusis"-->
+<!--              show-value-->
+<!--              font-size="12px"-->
+<!--              size="70px"-->
+<!--              :thickness="0.22"-->
+<!--              color="teal"-->
+<!--              track-color="grey-3"-->
+<!--              class="q-ma-md"-->
+<!--            >-->
+<!--              {{ diseaseMetric.tuberclusis }}%-->
+<!--            </q-knob>-->
+<!--            <div class="q-pb-sm">Tuberclusis</div>-->
+<!--          </div>-->
+<!--        </q-card>-->
+<!--      </q-card>-->
 
-      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">
-        <q-card>
-          <div class="text-center">
-            <q-knob
-              :value="diseaseMetric.none"
-              show-value
-              font-size="12px"
-              size="70px"
-              :thickness="0.22"
-              color="teal"
-              track-color="grey-3"
-              class="q-ma-md"
-            >
-              {{ diseaseMetric.none }}%
-            </q-knob>
-            <div class="q-pb-sm">Not Identified</div>
-          </div>
-        </q-card>
-      </div>
+<!--      <div class="col-xs-12 col-sm-12 col-md-3 q-pa-xs">-->
+<!--        <q-card>-->
+<!--          <div class="text-center">-->
+<!--            <q-knob-->
+<!--              :value="diseaseMetric.none"-->
+<!--              show-value-->
+<!--              font-size="12px"-->
+<!--              size="70px"-->
+<!--              :thickness="0.22"-->
+<!--              color="teal"-->
+<!--              track-color="grey-3"-->
+<!--              class="q-ma-md"-->
+<!--            >-->
+<!--              {{ diseaseMetric.none }}%-->
+<!--            </q-knob>-->
+<!--            <div class="q-pb-sm">Not Identified</div>-->
+<!--          </div>-->
+<!--        </q-card>-->
+<!--      </div>-->
     </div>
 
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-6 q-pa-xs">
-        <q-card>
+        <q-card bordered flat>
           <q-card-section>
             <column-chart :data="reportByLga" title="Report By LGA"></column-chart>
           </q-card-section>
         </q-card>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 q-pa-xs">
-        <q-card>
+        <q-card bordered flat>
           <q-card-section>
             <column-chart :data="reportByState" title="Report By STATES"></column-chart>
           </q-card-section>
@@ -101,14 +106,14 @@
 
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-6 q-pa-xs">
-        <q-card>
+        <q-card bordered flat>
           <q-card-section>
             <line-chart :data="reportByDate" title="Reports by Date"></line-chart>
           </q-card-section>
         </q-card>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 q-pa-xs">
-        <q-card>
+        <q-card bordered flat>
           <q-card-section>
             <pie-chart :data="reportByPossibleDisease" title="Possible Disease"></pie-chart>
           </q-card-section>
